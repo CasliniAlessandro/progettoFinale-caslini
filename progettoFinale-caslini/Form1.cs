@@ -14,17 +14,16 @@ namespace progettoFinale_caslini
 {
   public partial class Form1 : Form
   {
-    public LibriDisponibili libridisp = new LibriDisponibili();
-    public Form1()
+      public LibriDisponibili libridisp = new LibriDisponibili();
+      public Form1()
     {
       InitializeComponent();
     }
-
-    private void Form1_Load(object sender, EventArgs e)
+      private void Form1_Load(object sender, EventArgs e)
     {
 
     }
-    private void AggiornaListView()
+      private void AggiornaListView()
     {
       listView1.Items.Clear();
       foreach (var libro in libridisp.GetLibri())
@@ -32,8 +31,7 @@ namespace progettoFinale_caslini
         listView1.Items.Add("Titolo: " + libro.Titolo + "   Autore: " + libro.Autore + "   Prezzo: " + libro.Prezzo);
       }
     }
-
-    private void btnAggiorna1_Click(object sender, EventArgs e)
+      private void btnAggiorna1_Click(object sender, EventArgs e)
     {
       string titolo = txtTitolo1.Text;
       string autore = txtAutore1.Text;
@@ -119,7 +117,6 @@ namespace progettoFinale_caslini
 			  // Visualizza un messaggio di conferma
 			  MessageBox.Show("Libro modificato con successo.");
 		  }
-
       private void btnRicerca_Click(object sender, EventArgs e)
       {
         string titoloDaRicercare = txtTitoloDaRicercare.Text;
