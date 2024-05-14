@@ -28,7 +28,7 @@ namespace progettoFinale_caslini
             listView1.Items.Clear();
             foreach (var libro in libridisp.GetLibri())
             {
-                listView1.Items.Add("Titolo: " + libro.Titolo + "   Autore: " + libro.Autore + "   prezzo: " + libro.Prezzo);
+                listView1.Items.Add("Titolo: " + libro.Titolo + "   Autore: " + libro.Autore + "   Prezzo: " + libro.Prezzo);
             }
         }
 
@@ -90,5 +90,15 @@ namespace progettoFinale_caslini
             // Visualizza un messaggio di conferma
             MessageBox.Show("Libro modificato con successo.");
         }
-    }
+
+		private void btnRicerca_Click(object sender, EventArgs e)
+		{
+			string titoloDaRicercare = txtTitoloDaRicercare.Text;
+			string autoreDaRicercare = txtAutoreDaRicercare.Text;
+			string prezzoDaRicercare = txtPrezzoDaRicercare.Text;
+
+			// Chiama il metodo di ricerca
+			RicercaLibri.Ricerca(listView1, listView2, titoloDaRicercare, autoreDaRicercare, prezzoDaRicercare);
+		}
+	}
 }
