@@ -60,6 +60,8 @@
 			this.label13 = new System.Windows.Forms.Label();
 			this.label14 = new System.Windows.Forms.Label();
 			this.label15 = new System.Windows.Forms.Label();
+			this.label16 = new System.Windows.Forms.Label();
+			this.label17 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// listView1
@@ -141,7 +143,7 @@
 			// listView2
 			// 
 			this.listView2.HideSelection = false;
-			this.listView2.Location = new System.Drawing.Point(996, 35);
+			this.listView2.Location = new System.Drawing.Point(977, 48);
 			this.listView2.Margin = new System.Windows.Forms.Padding(4);
 			this.listView2.Name = "listView2";
 			this.listView2.Size = new System.Drawing.Size(380, 360);
@@ -356,11 +358,33 @@
 			this.label15.TabIndex = 31;
 			this.label15.Text = "Prezzo da ricercare";
 			// 
+			// label16
+			// 
+			this.label16.AutoSize = true;
+			this.label16.Location = new System.Drawing.Point(163, 28);
+			this.label16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label16.Name = "label16";
+			this.label16.Size = new System.Drawing.Size(118, 16);
+			this.label16.TabIndex = 32;
+			this.label16.Text = "LIBRI DISPONIBILI";
+			// 
+			// label17
+			// 
+			this.label17.AutoSize = true;
+			this.label17.Location = new System.Drawing.Point(1129, 28);
+			this.label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label17.Name = "label17";
+			this.label17.Size = new System.Drawing.Size(102, 16);
+			this.label17.TabIndex = 33;
+			this.label17.Text = "LIBRI VENDUTI";
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1389, 554);
+			this.Controls.Add(this.label17);
+			this.Controls.Add(this.label16);
 			this.Controls.Add(this.label15);
 			this.Controls.Add(this.label14);
 			this.Controls.Add(this.label13);
@@ -436,6 +460,8 @@
 		private System.Windows.Forms.Label label13;
 		private System.Windows.Forms.Label label14;
 		private System.Windows.Forms.Label label15;
+		private System.Windows.Forms.Label label16;
+		private System.Windows.Forms.Label label17;
 	}
 }
 
