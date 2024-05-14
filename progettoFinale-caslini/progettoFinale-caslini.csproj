@@ -57,6 +57,7 @@
     </Compile>
     <Compile Include="LibriDisponibili.cs" />
     <Compile Include="Libro.cs" />
+    <Compile Include="ModificaLibri.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
