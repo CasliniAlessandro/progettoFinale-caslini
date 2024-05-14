@@ -15,7 +15,7 @@ namespace progettoFinale_caslini
 
         public Libro(string titolo, string autore, string prezzo)
         {
-            Titolo = titolo;
+            Titolo = titolo; 
             Autore = autore;
             Prezzo = prezzo;
 
