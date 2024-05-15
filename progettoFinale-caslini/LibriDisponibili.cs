@@ -16,8 +16,12 @@ namespace progettoFinale_caslini
         // Metodo per aggiungere un nuovo libro alla lista
         public void AggiungiLibro(string titolo, string autore, string prezzo)
         {
-            libri.Add(new Libro(titolo, autore, prezzo));
-        }
+			// Crea un nuovo libro
+			Libro nuovoLibro = new Libro(titolo, autore, prezzo);
+
+			// Aggiungi il nuovo libro alla lista
+			libri.Add(nuovoLibro);
+		}
 
         // Metodo per salvare la lista di libri su un file JSON--> Serializzazione 
         public void SalvaLibrild(string filePath)
@@ -39,8 +43,8 @@ namespace progettoFinale_caslini
         // Metodo per ottenere la lista di libri
         public List<Libro> GetLibri()
         {
-            return libri;
-        }
+			return new List<Libro>(libri);
+		}
 
 
     }
