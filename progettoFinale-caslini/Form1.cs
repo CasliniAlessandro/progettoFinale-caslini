@@ -157,13 +157,36 @@ namespace progettoFinale_caslini
 		  }
       private void btnRicerca_Click(object sender, EventArgs e)
       {
-        string titoloDaRicercare = txtTitoloDaRicercare.Text;
-        string autoreDaRicercare = txtAutoreDaRicercare.Text;
-        string prezzoDaRicercare = txtPrezzoDaRicercare.Text;
+			string titoloDaRicercare = txtTitoloDaRicercare.Text;
+			string autoreDaRicercare = txtAutoreDaRicercare.Text;
+			string prezzoDaRicercare = txtPrezzoDaRicercare.Text;
 
-        // Chiama il metodo di ricerca
-        RicercaLibri.Ricerca(listView1, listView2, titoloDaRicercare, autoreDaRicercare, prezzoDaRicercare);
-      }
+			// Lista per i libri venduti
+			List<Libro> libriVenduti = new List<Libro>();
+
+			// Chiamata al metodo di ricerca
+			RicercaLibri.Ricerca(listView1, listView2, titoloDaRicercare, autoreDaRicercare, prezzoDaRicercare);
+
+			// Recupera i libri dalla listView2 come venduti
+			foreach (ListViewItem item in listView2.Items)
+			{
+				string[] libroInfo = item.Text.Split(new string[] { "   " }, StringSplitOptions.RemoveEmptyEntries);
+				string titolo = libroInfo[0].Replace("Titolo: ", "");
+				string autore = libroInfo[1].Replace("Autore: ", "");
+				string prezzo = libroInfo[2].Replace("Prezzo: ", "");
+
+				libriVenduti.Add(new Libro(titolo, autore, prezzo));
+			}
+
+			// Rimuovi i libri venduti dalla lista dei libri disponibili
+			libridisp.RimuoviLibriVenduti(libriVenduti);
+
+			// Aggiungi i libri venduti al file librivenduti.json
+			libridisp.AggiungiLibriVenduti(libriVenduti);
+
+			// Aggiorna la listView1 per riflettere i cambiamenti
+			AggiornaListView();
+		}
     }
   }
 
