@@ -73,10 +73,5 @@ namespace progettoFinale_caslini
 
 			RicercaLibri.SalvaLibriVenduti(libriVendutiEsistenti, "librivenduti.json");
 		}
-
-
-
 	}
-
-
 }

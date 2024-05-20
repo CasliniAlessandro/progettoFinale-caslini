@@ -11,32 +11,6 @@ namespace progettoFinale_caslini
 {
 	public class RicercaLibri
 	{
-
-		    public static void RimuoviLibroDaArchivioPrincipale(List<Libro> libri, string titolo, string autore, string prezzo, string filePath)
-    {
-        // Cerca il libro nella lista
-        Libro libroDaRimuovere = libri.Find(libro =>
-                libro.Titolo == titolo &&
-                libro.Autore == autore &&
-                libro.Prezzo == prezzo);
-
-        // Se il libro esiste, rimuovilo dalla lista
-        if (libroDaRimuovere != null)
-        {
-            libri.Remove(libroDaRimuovere);
-            // Salva la lista aggiornata nel file JSON
-            SalvaLibriPrincipale(libri, filePath);
-        }
-    }
-
-    private static void SalvaLibriPrincipale(List<Libro> libri, string filePath)
-    {
-        string jsonText = JsonConvert.SerializeObject(libri, Formatting.Indented);
-        File.WriteAllText(filePath, jsonText);
-    }
-
-
-
 		public static void Ricerca(ListView listView1, ListView listView2, string titoloDaRicercare, string autoreDaRicercare, string prezzoDaRicercare)
 		{
 			List<Libro> libriVenduti = new List<Libro>();
