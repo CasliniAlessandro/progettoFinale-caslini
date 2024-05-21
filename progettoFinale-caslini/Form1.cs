@@ -16,6 +16,7 @@ namespace progettoFinale_caslini
   {
       public LibriDisponibili libridisp = new LibriDisponibili();
       public LibriDisponibili libriven = new LibriDisponibili();
+      public Saldo saldo = new Saldo();
 
       public Form1()
       {
@@ -28,17 +29,16 @@ namespace progettoFinale_caslini
 	     libriven.CaricaLibrild("librivenduti.json");
          AggiornaListView();
 
-
       }
       private void AggiornaListView()
       {
 	      listView1.Items.Clear();
           listView2.Items.Clear();
+          saldo.Reset();
 
           foreach (var libro in libridisp.GetLibri())
           {
-             listView1.Items.Add("Titolo: " + libro.Titolo + "   Autore: " + libro.Autore + "   Prezzo: " + libro.Prezzo);
-                
+             listView1.Items.Add("Titolo: " + libro.Titolo + "   Autore: " + libro.Autore + "   Prezzo: " + libro.Prezzo);     
           }
 
           // Aggiorna la listView1 escludendo i libri presenti nella listView2
@@ -46,9 +46,13 @@ namespace progettoFinale_caslini
 	      {
 
 			listView2.Items.Add("Titolo: " + libro.Titolo + "   Autore: " + libro.Autore + "   Prezzo: " + libro.Prezzo);
-				
-	      }
-	  }
+                if (decimal.TryParse(libro.Prezzo, out decimal prezzoDecimal))
+                {
+                    saldo.AggiungiPrezzo(prezzoDecimal);
+                }
+          }
+            txtSommaPrezzi.Text = saldo.SommaPrezzi.ToString("F2"); // Mostra la somma formattata con due decimali
+      }
 
 
       private void btnAggiorna1_Click(object sender, EventArgs e)
@@ -88,59 +92,57 @@ namespace progettoFinale_caslini
 
 	  private void btnModifica_Click(object sender, EventArgs e)
       {
-			  string titoloDaModificare = txtTitoloDaModificare.Text;
-			  string autoreDaModificare = txtAutoreDaModificare.Text;
-			  string prezzoDaModificare = txtPrezzoDaModificare.Text;
+            string titoloDaModificare = txtTitoloDaModificare.Text;
+            string autoreDaModificare = txtAutoreDaModificare.Text;
+            string prezzoDaModificare = txtPrezzoDaModificare.Text;
 
-			  string nuovoTitolo = txtNuovoTitolo.Text;
-			  string nuovoAutore = txtNuovoAutore.Text;
-			  string nuovoPrezzo = txtNuovoPrezzo.Text;
+            string nuovoTitolo = txtNuovoTitolo.Text;
+            string nuovoAutore = txtNuovoAutore.Text;
+            string nuovoPrezzo = txtNuovoPrezzo.Text;
 
-			  // Controlla se sono stati inseriti tutti i valori necessari per la modifica
-			  if (string.IsNullOrWhiteSpace(titoloDaModificare) || string.IsNullOrWhiteSpace(autoreDaModificare) ||
-					string.IsNullOrWhiteSpace(nuovoTitolo) || string.IsNullOrWhiteSpace(nuovoAutore) || string.IsNullOrWhiteSpace(nuovoPrezzo))
-			  {
-				   MessageBox.Show("Inserire tutti i valori per la modifica del libro.");
-				   return;
-			  }
+            // Controlla se sono stati inseriti tutti i valori necessari per la modifica
+            if (string.IsNullOrWhiteSpace(titoloDaModificare) || string.IsNullOrWhiteSpace(autoreDaModificare) ||
+                  string.IsNullOrWhiteSpace(nuovoTitolo) || string.IsNullOrWhiteSpace(nuovoAutore) || string.IsNullOrWhiteSpace(nuovoPrezzo))
+            {
+                MessageBox.Show("Inserire tutti i valori per la modifica del libro.");
+                return;
+            }
 
-			  // Controlla se il nuovo prezzo è un numero valido
-			  if (!decimal.TryParse(nuovoPrezzo, out decimal nuovoPrezzoDecimal))
-			  {
-				   MessageBox.Show("Il prezzo deve essere un numero valido.");
-				   return;
-			  }
+            // Controlla se il nuovo prezzo è un numero valido
+            if (!decimal.TryParse(nuovoPrezzo, out decimal nuovoPrezzoDecimal))
+            {
+                MessageBox.Show("Il prezzo deve essere un numero valido.");
+                return;
+            }
 
-			  // Controlla se il nuovo autore contiene solo lettere
-			  if (!Regex.IsMatch(nuovoAutore, @"^[a-zA-Z\s]+$"))
-			  {
-				   MessageBox.Show("Il nuovo autore deve contenere solo lettere.");
-				   return;
-			  }
+            // Controlla se il nuovo autore contiene solo lettere
+            if (!Regex.IsMatch(nuovoAutore, @"^[a-zA-Z\s]+$"))
+            {
+                MessageBox.Show("Il nuovo autore deve contenere solo lettere.");
+                return;
+            }
 
-			  // Carica i libri dal file JSON
-			  ModificaLibri.CaricaLibrilm("libri.json");
+            // Carica i libri dal file JSON
+            ModificaLibri.CaricaLibrilm("libri.json");
 
-			  // Chiamata al metodo per modificare il libro nella ListView1
-			  ModificaLibri.Modifica(libridisp.GetLibri(), titoloDaModificare, autoreDaModificare, prezzoDaModificare, nuovoTitolo, nuovoAutore, nuovoPrezzo);
+            // Chiamata al metodo per modificare il libro nella ListView1
+            ModificaLibri.Modifica(libridisp.GetLibri(), titoloDaModificare, autoreDaModificare, prezzoDaModificare, nuovoTitolo, nuovoAutore, nuovoPrezzo);
 
-			  // Salva le modifiche sul file JSON
-			  ModificaLibri.SalvaLibrilm(libridisp.GetLibri(), "libri.json");
+            // Salva le modifiche sul file JSON
+            ModificaLibri.SalvaLibrilm(libridisp.GetLibri(), "libri.json");
 
-			  // Aggiorna la ListView1
-			  AggiornaListView();
+            // Aggiorna la ListView1
+            AggiornaListView();
 
-			  // Visualizza un messaggio di conferma
-			  MessageBox.Show("Libro modificato con successo.");
-	  }
+            // Visualizza un messaggio di conferma
+            MessageBox.Show("Libro modificato con successo.");
+      }
       private void btnRicerca_Click(object sender, EventArgs e)
       {
 			string titoloDaRicercare = txtTitoloDaRicercare.Text;
 			string autoreDaRicercare = txtAutoreDaRicercare.Text;
 			string prezzoDaRicercare = txtPrezzoDaRicercare.Text;
 
-
-			
 			if(libridisp.getLibroByTitolo(titoloDaRicercare))
 			{
 				if (!libriven.getLibroByTitolo(titoloDaRicercare))
@@ -159,7 +161,6 @@ namespace progettoFinale_caslini
 	  }
 
 
-    }
-
+  }
 }
 

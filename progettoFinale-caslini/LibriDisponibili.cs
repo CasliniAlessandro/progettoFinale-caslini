@@ -42,8 +42,6 @@ namespace progettoFinale_caslini
 		{
 			return new List<Libro>(libri);
 		}
-
-
         public bool getLibroByTitolo(string titoloDaRicercare)
         {
 			foreach(Libro lib in libri)

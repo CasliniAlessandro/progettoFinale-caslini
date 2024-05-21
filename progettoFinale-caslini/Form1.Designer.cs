@@ -62,6 +62,8 @@
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
+            this.txtSommaPrezzi = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // listView1
@@ -73,7 +75,6 @@
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.List;
-
             // 
             // btnAggiorna1
             // 
@@ -136,7 +137,7 @@
             // listView2
             // 
             this.listView2.HideSelection = false;
-            this.listView2.Location = new System.Drawing.Point(733, 39);
+            this.listView2.Location = new System.Drawing.Point(635, 39);
             this.listView2.Name = "listView2";
             this.listView2.Size = new System.Drawing.Size(286, 293);
             this.listView2.TabIndex = 8;
@@ -353,17 +354,35 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(847, 23);
+            this.label17.Location = new System.Drawing.Point(741, 23);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(85, 13);
             this.label17.TabIndex = 33;
             this.label17.Text = "LIBRI VENDUTI";
             // 
+            // txtSommaPrezzi
+            // 
+            this.txtSommaPrezzi.Location = new System.Drawing.Point(843, 340);
+            this.txtSommaPrezzi.Name = "txtSommaPrezzi";
+            this.txtSommaPrezzi.Size = new System.Drawing.Size(78, 20);
+            this.txtSommaPrezzi.TabIndex = 34;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(800, 347);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(37, 13);
+            this.label18.TabIndex = 35;
+            this.label18.Text = "Saldo:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1042, 450);
+            this.ClientSize = new System.Drawing.Size(939, 450);
+            this.Controls.Add(this.label18);
+            this.Controls.Add(this.txtSommaPrezzi);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label15);
@@ -442,6 +461,8 @@
 		private System.Windows.Forms.Label label15;
 		private System.Windows.Forms.Label label16;
 		private System.Windows.Forms.Label label17;
-	}
+        private System.Windows.Forms.TextBox txtSommaPrezzi;
+        private System.Windows.Forms.Label label18;
+    }
 }
 
