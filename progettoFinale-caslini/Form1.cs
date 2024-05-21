@@ -17,78 +17,77 @@ namespace progettoFinale_caslini
       public LibriDisponibili libridisp = new LibriDisponibili();
       public LibriDisponibili libriven = new LibriDisponibili();
 
-        public Form1()
-    {
-      InitializeComponent();
-    }
-    private void Form1_Load(object sender, EventArgs e)
-    {
+      public Form1()
+      {
+         InitializeComponent();
+      }
+      private void Form1_Load(object sender, EventArgs e)
+      {
 
-            libridisp.CaricaLibrild("libri.json");
-	        libriven.CaricaLibrild("librivenduti.json");
-            AggiornaListView();
+         libridisp.CaricaLibrild("libri.json");
+	     libriven.CaricaLibrild("librivenduti.json");
+         AggiornaListView();
 
 
-        }
-    private void AggiornaListView()
-    {
-			listView1.Items.Clear();
-            listView2.Items.Clear();
+      }
+      private void AggiornaListView()
+      {
+	      listView1.Items.Clear();
+          listView2.Items.Clear();
 
-            foreach (var libro in libridisp.GetLibri())
-            {
-                listView1.Items.Add("Titolo: " + libro.Titolo + "   Autore: " + libro.Autore + "   Prezzo: " + libro.Prezzo);
+          foreach (var libro in libridisp.GetLibri())
+          {
+             listView1.Items.Add("Titolo: " + libro.Titolo + "   Autore: " + libro.Autore + "   Prezzo: " + libro.Prezzo);
                 
+          }
+
+          // Aggiorna la listView1 escludendo i libri presenti nella listView2
+          foreach (var libro in libriven.GetLibri())
+	      {
+
+			listView2.Items.Add("Titolo: " + libro.Titolo + "   Autore: " + libro.Autore + "   Prezzo: " + libro.Prezzo);
+				
+	      }
+	  }
+
+
+      private void btnAggiorna1_Click(object sender, EventArgs e)
+      {
+            string titolo = txtTitolo1.Text;
+            string autore = txtAutore1.Text;
+            string prezzo = txtPrezzo1.Text;
+
+            // Controlla se il prezzo è un numero valido
+            if (!decimal.TryParse(prezzo, out decimal prezzoDecimal))
+            {
+                MessageBox.Show("Il prezzo deve essere un numero valido.");
+                return;
             }
 
-            // Aggiorna la listView1 escludendo i libri presenti nella listView2
-            foreach (var libro in libriven.GetLibri())
-			{
+            // Controlla se l'autore contiene solo lettere
+            if (!Regex.IsMatch(autore, @"^[a-zA-Z\s]+$"))
+            {
+                MessageBox.Show("L'autore deve contenere solo lettere.");
+                return;
+            }
 
-					listView2.Items.Add("Titolo: " + libro.Titolo + "   Autore: " + libro.Autore + "   Prezzo: " + libro.Prezzo);
-				
-			}
-		}
-
-
-    private void btnAggiorna1_Click(object sender, EventArgs e)
-    {
-			string titolo = txtTitolo1.Text;
-			string autore = txtAutore1.Text;
-			string prezzo = txtPrezzo1.Text;
-
-			// Controlla se il prezzo è un numero valido
-			if (!decimal.TryParse(prezzo, out decimal prezzoDecimal))
-			{
-				MessageBox.Show("Il prezzo deve essere un numero valido.");
-				return;
-			}
-
-			// Controlla se l'autore contiene solo lettere
-			if (!Regex.IsMatch(autore, @"^[a-zA-Z\s]+$"))
-			{
-				MessageBox.Show("L'autore deve contenere solo lettere.");
-				return;
-			}
-
-			if (string.IsNullOrWhiteSpace(titolo) || string.IsNullOrWhiteSpace(autore))
-			{
-				MessageBox.Show("Inserire titolo e autore del libro.");
-				return;
-			}
+            if (string.IsNullOrWhiteSpace(titolo) || string.IsNullOrWhiteSpace(autore))
+            {
+                MessageBox.Show("Inserire titolo e autore del libro.");
+                return;
+            }
 
             if (!libridisp.getLibroByTitolo(titolo))
             {
-				libridisp.AggiungiLibro(titolo, autore,prezzo);
+                libridisp.AggiungiLibro(titolo, autore, prezzo);
                 AggiornaListView();
-				libridisp.SalvaLibrild("libri.json");
+                libridisp.SalvaLibrild("libri.json");
             }
+      }
 
-        }
 
-
-		private void btnModifica_Click(object sender, EventArgs e)
-    {
+	  private void btnModifica_Click(object sender, EventArgs e)
+      {
 			  string titoloDaModificare = txtTitoloDaModificare.Text;
 			  string autoreDaModificare = txtAutoreDaModificare.Text;
 			  string prezzoDaModificare = txtPrezzoDaModificare.Text;
@@ -133,9 +132,9 @@ namespace progettoFinale_caslini
 
 			  // Visualizza un messaggio di conferma
 			  MessageBox.Show("Libro modificato con successo.");
-		}
-    private void btnRicerca_Click(object sender, EventArgs e)
-    {
+	  }
+      private void btnRicerca_Click(object sender, EventArgs e)
+      {
 			string titoloDaRicercare = txtTitoloDaRicercare.Text;
 			string autoreDaRicercare = txtAutoreDaRicercare.Text;
 			string prezzoDaRicercare = txtPrezzoDaRicercare.Text;
@@ -157,7 +156,8 @@ namespace progettoFinale_caslini
 
             }
 
-		  }
+	  }
+
 
     }
 

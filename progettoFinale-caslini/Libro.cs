@@ -18,7 +18,6 @@ namespace progettoFinale_caslini
             Titolo = titolo; 
             Autore = autore;
             Prezzo = prezzo;
-
         }
     }
 }

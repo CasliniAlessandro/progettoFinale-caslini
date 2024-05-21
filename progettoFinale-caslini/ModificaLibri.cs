@@ -29,8 +29,6 @@ namespace progettoFinale_caslini
 
             MessageBox.Show("Il libro da modificare non è stato trovato.");
 
-
-
         }
 
         // Metodo per salvare la lista di libri su un file JSON
