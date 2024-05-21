@@ -15,37 +15,38 @@ namespace progettoFinale_caslini
   public partial class Form1 : Form
   {
       public LibriDisponibili libridisp = new LibriDisponibili();
+      public LibriDisponibili libriven = new LibriDisponibili();
 
-    public Form1()
+        public Form1()
     {
       InitializeComponent();
     }
     private void Form1_Load(object sender, EventArgs e)
     {
-			
 
-		}
+            libridisp.CaricaLibrild("libri.json");
+	        libriven.CaricaLibrild("librivenduti.json");
+            AggiornaListView();
+
+
+        }
     private void AggiornaListView()
     {
 			listView1.Items.Clear();
+            listView2.Items.Clear();
 
-			// Ottieni i titoli dei libri nella listView2
-			List<string> titoliListView2 = new List<string>();
-			foreach (ListViewItem item in listView2.Items)
-			{
-				string[] libroInfo = item.Text.Split(new string[] { "   " }, StringSplitOptions.RemoveEmptyEntries);
-				string titoloLibro = libroInfo[0].Replace("Titolo: ", "");
-				titoliListView2.Add(titoloLibro);
-			}
+            foreach (var libro in libridisp.GetLibri())
+            {
+                listView1.Items.Add("Titolo: " + libro.Titolo + "   Autore: " + libro.Autore + "   Prezzo: " + libro.Prezzo);
+                
+            }
 
-			// Aggiorna la listView1 escludendo i libri presenti nella listView2
-			foreach (var libro in libridisp.GetLibri())
+            // Aggiorna la listView1 escludendo i libri presenti nella listView2
+            foreach (var libro in libriven.GetLibri())
 			{
-				string titolo = libro.Titolo;
-				if (!titoliListView2.Contains(titolo))
-				{
-					listView1.Items.Add("Titolo: " + libro.Titolo + "   Autore: " + libro.Autore + "   Prezzo: " + libro.Prezzo);
-				}
+
+					listView2.Items.Add("Titolo: " + libro.Titolo + "   Autore: " + libro.Autore + "   Prezzo: " + libro.Prezzo);
+				
 			}
 		}
 
@@ -76,36 +77,14 @@ namespace progettoFinale_caslini
 				return;
 			}
 
-			try
-			{
-				// Ottieni i titoli dei libri nella listView2
-				List<string> titoliListView2 = new List<string>();
-				foreach (ListViewItem item in listView2.Items)
-				{
-					string[] libroInfo = item.Text.Split(new string[] { "   " }, StringSplitOptions.RemoveEmptyEntries);
-					string titoloLibro = libroInfo[0].Replace("Titolo: ", "");
-					titoliListView2.Add(titoloLibro);
-				}
+            if (!libridisp.getLibroByTitolo(titolo))
+            {
+				libridisp.AggiungiLibro(titolo, autore,prezzo);
+                AggiornaListView();
+				libridisp.SalvaLibrild("libri.json");
+            }
 
-				// Aggiungi il libro solo se non è presente nella listView2
-				if (!titoliListView2.Contains(titolo))
-				{
-					libridisp.AggiungiLibro(titolo, autore, prezzo);
-					libridisp.SalvaLibrild("libri.json");
-					libridisp.CaricaLibrild("libri.json");
-					AggiornaListView();
-					MessageBox.Show("Libro aggiunto con successo.");
-				}
-				else
-				{
-					MessageBox.Show("Il libro è già stato aggiunto alla lista.");
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show("Errore durante l'aggiunta del libro: " + ex.Message);
-			}
-		}
+        }
 
 
 		private void btnModifica_Click(object sender, EventArgs e)
@@ -161,32 +140,25 @@ namespace progettoFinale_caslini
 			string autoreDaRicercare = txtAutoreDaRicercare.Text;
 			string prezzoDaRicercare = txtPrezzoDaRicercare.Text;
 
-			// Lista per i libri venduti
-			List<Libro> libriVenduti = new List<Libro>();
 
-			// Chiamata al metodo di ricerca
-			RicercaLibri.Ricerca(listView1, listView2, titoloDaRicercare, autoreDaRicercare, prezzoDaRicercare);
-
-			// Recupera i libri dalla listView2 come venduti
-			foreach (ListViewItem item in listView2.Items)
+			
+			if(libridisp.getLibroByTitolo(titoloDaRicercare))
 			{
-				string[] libroInfo = item.Text.Split(new string[] { "   " }, StringSplitOptions.RemoveEmptyEntries);
-				string titolo = libroInfo[0].Replace("Titolo: ", "");
-				string autore = libroInfo[1].Replace("Autore: ", "");
-				string prezzo = libroInfo[2].Replace("Prezzo: ", "");
+				if (!libriven.getLibroByTitolo(titoloDaRicercare))
+				{
+					libridisp.RimuoviLibroPerTitolo(titoloDaRicercare);
+                    libridisp.SalvaLibrild("libri.json");
+					libriven.AggiungiLibro(titoloDaRicercare,autoreDaRicercare,prezzoDaRicercare);
+                    AggiornaListView();
+                    libriven.SalvaLibrild("librivenduti.json");
+                }
 
-				libriVenduti.Add(new Libro(titolo, autore, prezzo));
-			}
+               AggiornaListView();
 
-			// Rimuovi i libri venduti dalla lista dei libri disponibili
-			libridisp.RimuoviLibriVenduti(libriVenduti);
+            }
 
-			// Aggiungi i libri venduti al file librivenduti.json
-			libridisp.AggiungiLibriVenduti(libriVenduti);
-
-			// Aggiorna la listView1 per riflettere i cambiamenti
-			AggiornaListView();
 		  }
+
     }
 
 }

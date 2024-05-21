@@ -73,5 +73,22 @@ namespace progettoFinale_caslini
 
 			RicercaLibri.SalvaLibriVenduti(libriVendutiEsistenti, "librivenduti.json");
 		}
-	}
+
+        public bool getLibroByTitolo(string titoloDaRicercare)
+        {
+			foreach(Libro lib in libri)
+			{
+				if(lib.Titolo.Equals(titoloDaRicercare)) return true;
+			}
+			return false;
+        }
+        public void RimuoviLibroPerTitolo(string titolo)
+        {
+            Libro libroDaRimuovere = libri.FirstOrDefault(libro => libro.Titolo == titolo);
+            if (libroDaRimuovere != null)
+            {
+                libri.Remove(libroDaRimuovere);
+            }
+        }
+    }
 }

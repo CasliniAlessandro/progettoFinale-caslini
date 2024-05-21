@@ -11,6 +11,7 @@ namespace progettoFinale_caslini
 {
 	public class RicercaLibri
 	{
+
 		public static void Ricerca(ListView listView1, ListView listView2, string titoloDaRicercare, string autoreDaRicercare, string prezzoDaRicercare)
 		{
 			List<Libro> libriVenduti = new List<Libro>();
