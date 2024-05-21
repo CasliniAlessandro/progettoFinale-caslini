@@ -12,51 +12,51 @@ using Newtonsoft.Json;
 
 namespace progettoFinale_caslini
 {
-  public partial class Form1 : Form
-  {
-      public LibriDisponibili libridisp = new LibriDisponibili();
-      public LibriDisponibili libriven = new LibriDisponibili();
-      public Saldo saldo = new Saldo();
+    public partial class Form1 : Form
+    {
+        public LibriDisponibili libridisp = new LibriDisponibili();
+        public LibriDisponibili libriven = new LibriDisponibili();
+        public Saldo saldo = new Saldo();
 
-      public Form1()
-      {
-         InitializeComponent();
-      }
-      private void Form1_Load(object sender, EventArgs e)
-      {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
 
-         libridisp.CaricaLibrild("libri.json");
-	     libriven.CaricaLibrild("librivenduti.json");
-         AggiornaListView();
+            libridisp.CaricaLibrild("libri.json");
+            libriven.CaricaLibrild("librivenduti.json");
+            AggiornaListView();
 
-      }
-      private void AggiornaListView()
-      {
-	      listView1.Items.Clear();
-          listView2.Items.Clear();
-          saldo.Reset();
+        }
+        private void AggiornaListView()
+        {
+            listView1.Items.Clear();
+            listView2.Items.Clear();
+            saldo.Reset();
 
-          foreach (var libro in libridisp.GetLibri())
-          {
-             listView1.Items.Add("Titolo: " + libro.Titolo + "   Autore: " + libro.Autore + "   Prezzo: " + libro.Prezzo);     
-          }
+            foreach (var libro in libridisp.GetLibri())
+            {
+                listView1.Items.Add("Titolo: " + libro.Titolo + "   Autore: " + libro.Autore + "   Prezzo: " + libro.Prezzo);
+            }
 
-          // Aggiorna la listView1 escludendo i libri presenti nella listView2
-          foreach (var libro in libriven.GetLibri())
-	      {
+            // Aggiorna la listView1 escludendo i libri presenti nella listView2
+            foreach (var libro in libriven.GetLibri())
+            {
 
-			listView2.Items.Add("Titolo: " + libro.Titolo + "   Autore: " + libro.Autore + "   Prezzo: " + libro.Prezzo);
+                listView2.Items.Add("Titolo: " + libro.Titolo + "   Autore: " + libro.Autore + "   Prezzo: " + libro.Prezzo);
                 if (decimal.TryParse(libro.Prezzo, out decimal prezzoDecimal))
                 {
                     saldo.AggiungiPrezzo(prezzoDecimal);
                 }
-          }
+            }
             txtSommaPrezzi.Text = saldo.SommaPrezzi.ToString("F2"); // Mostra la somma formattata con due decimali
-      }
+        }
 
 
-      private void btnAggiorna1_Click(object sender, EventArgs e)
-      {
+        private void btnAggiorna1_Click(object sender, EventArgs e)
+        {
             string titolo = txtTitolo1.Text;
             string autore = txtAutore1.Text;
             string prezzo = txtPrezzo1.Text;
@@ -87,11 +87,11 @@ namespace progettoFinale_caslini
                 AggiornaListView();
                 libridisp.SalvaLibrild("libri.json");
             }
-      }
+        }
 
 
-	  private void btnModifica_Click(object sender, EventArgs e)
-      {
+        private void btnModifica_Click(object sender, EventArgs e)
+        {
             string titoloDaModificare = txtTitoloDaModificare.Text;
             string autoreDaModificare = txtAutoreDaModificare.Text;
             string prezzoDaModificare = txtPrezzoDaModificare.Text;
@@ -136,31 +136,110 @@ namespace progettoFinale_caslini
 
             // Visualizza un messaggio di conferma
             MessageBox.Show("Libro modificato con successo.");
-      }
-      private void btnRicerca_Click(object sender, EventArgs e)
-      {
-			string titoloDaRicercare = txtTitoloDaRicercare.Text;
-			string autoreDaRicercare = txtAutoreDaRicercare.Text;
-			string prezzoDaRicercare = txtPrezzoDaRicercare.Text;
+        }
+        private void btnRicerca_Click(object sender, EventArgs e)
+        {
+            string titoloDaRicercare = txtTitoloDaRicercare.Text;
+            string autoreDaRicercare = txtAutoreDaRicercare.Text;
+            string prezzoDaRicercare = txtPrezzoDaRicercare.Text;
 
-			if(libridisp.getLibroByTitolo(titoloDaRicercare))
-			{
-				if (!libriven.getLibroByTitolo(titoloDaRicercare))
-				{
-					libridisp.RimuoviLibroPerTitolo(titoloDaRicercare);
+            if (libridisp.getLibroByTitolo(titoloDaRicercare))
+            {
+                if (!libriven.getLibroByTitolo(titoloDaRicercare))
+                {
+                    libridisp.RimuoviLibroPerTitolo(titoloDaRicercare);
                     libridisp.SalvaLibrild("libri.json");
-					libriven.AggiungiLibro(titoloDaRicercare,autoreDaRicercare,prezzoDaRicercare);
+                    libriven.AggiungiLibro(titoloDaRicercare, autoreDaRicercare, prezzoDaRicercare);
                     AggiornaListView();
                     libriven.SalvaLibrild("librivenduti.json");
                 }
 
-               AggiornaListView();
+                AggiornaListView();
 
             }
 
-	  }
+        }
 
+        private void btnCancellaLibro_Click(object sender, EventArgs e)
+        {
+            // Controlla se un libro è selezionato nella listView1
+            if (listView1.SelectedItems.Count > 0)
+            {
+                foreach (ListViewItem selectedItem in listView1.SelectedItems)
+                {
+                    // Estrai il titolo del libro selezionato
+                    string libroInfo = selectedItem.Text;
+                    string titolo = libroInfo.Split(new string[] { "   " }, StringSplitOptions.None)[0].Replace("Titolo: ", "");
 
-  }
+                    // Rimuovi il libro dalla lista dei libri disponibili
+                    libridisp.RimuoviLibroPerTitolo(titolo);
+
+                    // Rimuovi l'elemento dalla listView1
+                    listView1.Items.Remove(selectedItem);
+                }
+
+                // Salva la lista aggiornata dei libri nel file JSON
+                libridisp.SalvaLibrild("libri.json");
+
+                // Aggiorna la listView
+                AggiornaListView();
+            }
+            else
+            {
+                MessageBox.Show("Seleziona un libro da cancellare.");
+            }
+        }
+
+        private void btnPulisciListview_Click(object sender, EventArgs e)
+        {
+            // Conferma la cancellazione di tutti i libri
+            var result = MessageBox.Show("Sei sicuro di voler cancellare tutti i libri?", "Conferma Cancellazione", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result == DialogResult.Yes)
+            {
+                // Cancella tutti gli elementi dalla listView1
+                listView1.Items.Clear();
+
+                // Cancella tutti gli elementi dalla lista dei libri disponibili
+                libridisp.SvuotaLibri();
+
+                // Salva la lista vuota dei libri nel file JSON
+                libridisp.SalvaLibrild("libri.json");
+
+                // Aggiorna la listView
+                AggiornaListView();
+            }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnPuliscilistview2_Click(object sender, EventArgs e)
+        {
+            // Conferma la cancellazione di tutti i libri
+            var result = MessageBox.Show("Sei sicuro di voler cancellare tutti i libri?", "Conferma Cancellazione", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result == DialogResult.Yes)
+            {
+
+                // Cancella tutti gli elementi dalla listView2
+                listView2.Items.Clear();
+
+                // Cancella tutti gli elementi dalla lista dei libri venduti
+                libriven.SvuotaLibri();
+
+                // Salva la lista vuota dei libri venduti nel file JSON
+                libriven.SalvaLibrild("librivenduti.json");
+
+                // Aggiorna il saldo
+                saldo.Reset();
+                txtSommaPrezzi.Text = saldo.SommaPrezzi.ToString("F2");
+
+                // Aggiorna le listView
+                AggiornaListView();
+            }
+
+        }
+    }
 }
 

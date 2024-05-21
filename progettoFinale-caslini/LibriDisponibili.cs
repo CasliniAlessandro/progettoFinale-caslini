@@ -58,5 +58,9 @@ namespace progettoFinale_caslini
                 libri.Remove(libroDaRimuovere);
             }
         }
+        public void SvuotaLibri()
+        {
+            libri.Clear();
+        }
     }
 }
